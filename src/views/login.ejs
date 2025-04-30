@@ -1,12 +1,18 @@
 <%- include('./partials/head') %>
 
-
     <body class='login'>
         <%- include('./partials/header') %>
 
             <form action='/login' method='POST' id='form' class='form'>
-                <section class='form-register '>
+                <section class='form-register'>
                     <h4 class='text-center'>Inicio de Sesión</h4>
+                    
+                    <% if (locals.errors && errors.general) { %>
+                        <div class="alert alert-danger">
+                            <%= errors.general.msg %>
+                        </div>
+                    <% } %>
+
                     <div class='div-datos'>
                         <h5 class='p-2'>Ingrese Usuario:</h5>
                         <input class='controls' type='text' name='user' id='user' placeholder='Usuario' data-index='0'>
@@ -26,14 +32,17 @@
                             </small>
                         </div>
                     </div>
+                    <div class="div-datos">
+                        <label class="remember-me">
+                            <input type="checkbox" name="recordarme" id="recordarme"> Recordarme
+                        </label>
+                    </div>
                     <button class='botons' id='btnModalSubmit' type='submit'>Iniciar sesión</button>
                     <div id='box-errores-front'>
                         <span id='errores-front'></span>
                     </div>
                 </section>
-
             </form>
             <script src='/js/login_validations.js'></script>
     </body>
-
     </html>

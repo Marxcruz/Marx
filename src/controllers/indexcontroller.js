@@ -73,38 +73,54 @@ module.exports = {
   historias: async (req, res) => {
     try {
       let { draw, length, start, search } = req.query;
+      length = parseInt(length) || 10;
+      start = parseInt(start) || 0;
 
-      let query = {
-        hc: { $regex: search.value, $options: 'i' },
-        vigente: { $ne: 0 },
-      };
+      let query = { vigente: { $ne: 0 } };
+      
+      if (search && search.value) {
+        query.$or = [
+          { hc: { $regex: search.value, $options: 'i' } }
+        ];
+      }
 
-      const count = await HistoriasClinicas.countDocuments(query);
-      const rows = await HistoriasClinicas.find(query)
-        .skip(parseInt(start))
-        .limit(parseInt(length))
+      const total = await HistoriasClinicas.countDocuments({ vigente: { $ne: 0 } });
+      const filtered = await HistoriasClinicas.countDocuments(query);
+      
+      const historias = await HistoriasClinicas.find(query)
+        .skip(start)
+        .limit(length)
         .sort({ _id: -1 })
         .populate('personaId')
         .populate('cajaId');
 
-      const data = {
-        draw: draw,
-        iTotalDisplayRecords: count,
-        iTotalRecords: count,
-        data: rows,
-      };
-      return res.json(data);
+      const data = historias.map(historia => ({
+        id: historia._id,
+        hc: historia.hc,
+        ultimoRegistro: historia.ultimoRegistro,
+        persona: {
+          nombre: historia.personaId.nombre,
+          apellido: historia.personaId.apellido
+        }
+      }));
+
+      return res.json({
+        draw: parseInt(draw),
+        recordsTotal: total,
+        recordsFiltered: filtered,
+        data: data
+      });
     } catch (error) {
-      console.error(error);
-      res.status(500).send('Error al obtener datos de la base');
+      console.error('Error en historias:', error);
+      return res.status(500).json({
+        error: 'Error al obtener datos de la base',
+        details: error.message
+      });
     }
   },
-  listado: async (req, res) => {
+  listado: (req, res) => {
     res.render('listado', {
-      title: 'Listado',
-      capitalizeLetter,
-      parceNum,
-      parceDate,
+      title: 'Listado de Historias'
     });
   },
   paciente: async (req, res) => {

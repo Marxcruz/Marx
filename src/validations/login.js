@@ -1,46 +1,38 @@
 const { check } = require('express-validator');
-const db = require('../database/models');
+const Usuarios = require('../database/models/usuarios');
+const bcrypt = require('bcryptjs');
 
 module.exports = [
   check('user')
     .trim()
-    .toLowerCase()
     .notEmpty()
     .withMessage('Debe ingresar usuario')
-    .matches(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s]+$/)
-    .withMessage('Credenciales inválidas')
-    .custom((value) => {
-      return db.Usuarios.findOne({
-        where: {
-          usuario: value,
-        },
-      })
-        .then((usuario) => {
-          if (!usuario) {
-            return Promise.reject('Credenciales inválidas');
-          }
-        })
-        .catch(() => Promise.reject('Credenciales inválidas'));
+    .isLength({ min: 3 })
+    .withMessage('El usuario debe tener al menos 3 caracteres')
+    .custom(async (value) => {
+      const usuario = await Usuarios.findOne({
+        usuario: value.toLowerCase()
+      });
+      
+      if (!usuario) {
+        throw new Error('Credenciales inválidas');
+      }
+      return true;
     }),
 
   check('pass')
-    .trim()
-    .toLowerCase()
     .notEmpty()
     .withMessage('Debe ingresar contraseña')
-    .matches(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s]+$/)
-    .withMessage('Credenciales inválidas')
-    .custom((value, { req }) => {
-      return db.Usuarios.findOne({
-        where: {
-          usuario: req.body.user,
-        },
-      })
-        .then((usuario) => {
-          if (value !== usuario.contraseña) {
-            return Promise.reject('Credenciales inválidas');
-          }
-        })
-        .catch(() => Promise.reject('Credenciales inválidas'));
+    .isLength({ min: 6 })
+    .withMessage('La contraseña debe tener al menos 6 caracteres')
+    .custom(async (value, { req }) => {
+      const usuario = await Usuarios.findOne({
+        usuario: req.body.user.toLowerCase()
+      });
+
+      if (!usuario || !(await bcrypt.compare(value, usuario.contraseña))) {
+        throw new Error('Credenciales inválidas');
+      }
+      return true;
     }),
 ];

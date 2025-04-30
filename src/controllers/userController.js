@@ -1,14 +1,8 @@
 const { validationResult } = require('express-validator');
-let Usuarios;
-try {
-  Usuarios = require('../database/models/usuarios');
-  console.log('Modelo Usuarios cargado correctamente');
-} catch (error) {
-  console.error('Error al cargar el modelo Usuarios:', error);
-}
+const Usuarios = require('../database/models/usuarios');
+const bcrypt = require('bcryptjs');
 
 module.exports = {
-
   login: (req, res) => {
     res.render('login', {
       title: 'Iniciar Sesión',
@@ -16,45 +10,53 @@ module.exports = {
   },
   processLogin: async (req, res) => {
     let errors = validationResult(req);
-    console.log(req.body);
     if (errors.isEmpty()) {
-      const user = req.body.user ? req.body.user.trim() : '';
+      const { user, pass } = req.body;
       try {
-        if (!Usuarios) {
-          console.error('Modelo Usuarios no está definido');
-          return res.render('login', {
-            title: 'Iniciar Sesión',
-            errors: { general: { msg: 'Error interno: modelo de usuario no disponible' } },
-          });
-        }
-        const foundUser = await Usuarios.findOne({ usuario: user });
-        if (foundUser) {
+        const foundUser = await Usuarios.findOne({
+          usuario: user.trim().toLowerCase()
+        });
+
+        if (foundUser && await bcrypt.compare(pass, foundUser.contraseña)) {
           req.session.userLogin = {
             id: foundUser._id,
             usuario: foundUser.usuario,
           };
-          res.cookie('recordarme', req.session.userLogin, {
-            maxAge: 1000 * 60,
-          });
+
+          if (req.body.recordarme) {
+            res.cookie('recordarme', req.session.userLogin, {
+              maxAge: 1000 * 60 * 60 * 24 * 7, // 1 semana
+              httpOnly: true,
+              secure: process.env.NODE_ENV === 'production'
+            });
+          }
+
           return res.redirect('/listado');
         } else {
           return res.render('login', {
             title: 'Iniciar Sesión',
-            errors: { user: { msg: 'Usuario no encontrado' } },
+            errors: { 
+              general: { msg: 'Credenciales inválidas' }
+            }
           });
         }
       } catch (error) {
-        console.error(error);
+        console.error('Error en login:', error);
         return res.render('login', {
           title: 'Iniciar Sesión',
-          errors: { general: { msg: 'Error en el servidor' } },
+          errors: { general: { msg: 'Error en el servidor' } }
         });
       }
     } else {
       return res.render('login', {
         title: 'Iniciar Sesión',
-        errors: errors.mapped(),
+        errors: errors.mapped()
       });
     }
   },
+  logout: (req, res) => {
+    req.session.destroy();
+    res.clearCookie('recordarme');
+    return res.redirect('/');
+  }
 };
