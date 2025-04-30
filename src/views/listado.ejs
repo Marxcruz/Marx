@@ -1,0 +1,34 @@
+<%- include('./partials/head') %>
+
+  <body class='listado'>
+    <%- include('./partials/header') %>
+      <section>
+        <div class='container-table'>
+            <div class='col-sm-12 col-md-12 col-lg-12 col-xl-12'>
+              <table id='datatable_historias' class='table table-hover'>
+                <thead>
+                  <tr id='tr'>
+                    <th scope='col' class='centered'>HISTORIA CLÍNICA</th>
+                    <th scope='col' class='centered'>ÚLTIMO REGISTRO</th>
+                    <th scope='col' class='centered'>NOMBRE COMPLETO</th>
+                    <th scope='col' class='detail centered'></th>
+                  </tr>
+                </thead>
+                <tbody id='tableBody_historias'>
+                </tbody>
+              </table>
+          </div>
+        </div>
+        <!-- Bootstrap-->
+      </section>
+
+      <!-- jQuery -->
+      <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+      <!-- DataTable -->
+      <script src='https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js'></script>
+      <script src='https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js'></script>
+      <!-- custom -->
+      <script src='/js/tabla.js'></script>
+  </body>
+
+  </html>

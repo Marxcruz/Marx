@@ -1,0 +1,57 @@
+<%- include('./partials/head') %>
+
+  <body class='index paciente'>
+    <%- include('./partials/header') %>
+      <form action=' method='POST' id='form' class='form'>
+        <section class='form-register '>
+          <h4 class='text-center'>Historia clínica del paciente</h4>
+          <div class='div-datos'>
+            <h5 class='p-2'>Historia clínica:</h5>
+            <p class='p-2'>
+              <%= historia.hc %>
+            </p>
+          </div>
+          <div class='div-datos'>
+            <h5>Nombre:</h5>
+            <p>
+              <%= capitalizeLetter(historia.persona.nombre)%>
+            </p>
+          </div>
+          <div class='div-datos'>
+            <h5>Apellido:</h5>
+            <p>
+              <%= capitalizeLetter(historia.persona.apellido)%>
+            </p>
+          </div>
+          <div class='div-datos'>
+            <h5>DNI:</h5>
+            <p>
+              <%= historia.persona.dni%>
+            </p>
+          </div>
+          <div class='div-datos'>
+            <h5>Último registro:</h5>
+            <p>
+              <%= parceDate(historia.ultimoRegistro) %>
+            </p>
+          </div>
+          <div class='div-datos'>
+            <h5>Código de barras:</h5>
+            <p>
+              <%= historia.caja.codigoBarras %>
+            </p>
+          </div>
+          <% if (locals.userLogin) { %>
+            <a href='/hc/edit/<%= historia.id %>'>
+              <button class='botons' type='button' >Editar</button>
+            </a>
+          </form>
+          <form action='/hc/delete/<%= historia.id %>?_method=PUT' method='POST' enctype='multipart/form-data'>
+            <button class='botons text-bg-danger' type='submit'>Eliminar</button>
+          <% } %>
+        </section>
+
+      </form>
+  </body>
+
+  </html>

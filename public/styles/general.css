@@ -1,0 +1,38 @@
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+textarea {
+  resize: none !important;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--color-background) !important;
+}
+
+:root{
+  --font-family: 'Roboto', sans-serif;
+  --color-background: #222222;
+  --color-header: #24303c;
+  --color-header-logo: #35b7e8;
+  --color-header-a: #fff;
+  --color-background-form: #24303c;
+  --color-form-title: #fff;
+  --color-form-background-input: #24303c;
+  --color-form-border-input: #35b7e8;
+  --color-form-text-input: #fff;
+  --color-form-button: #35b7e8;
+  --color-backgroun-listado: #24303c;
+}

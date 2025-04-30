@@ -1,0 +1,102 @@
+<%- include('./partials/head') %>
+
+  <body class='index'>
+    <%- include('./partials/header') %>
+
+      <form action='/' method='POST' id='form' class='form'>
+        <section class='form-register '>
+          <h4 class='text-center'>Ingreso de Historia Clínica</h4>
+          <input class='controls' type='text' name='hc' id='hc' placeholder='HC/DNI' data-index='0' autocomplete='off'>
+
+          <% if (locals.errors && errors.hc) { %>
+            <div class='box-errores-back'>
+              <span id='errores' class='errores text-danger'>
+                <%= errors.hc.msg %>
+              </span>
+            </div>
+            <% } %>
+            <input class='controls' type='text' name='hc2' id='hc2' placeholder='Repita HC' data-index='5'autocomplete='off'>
+
+            <% if (locals.errors && errors.hc2) { %>
+              <div class='box-errores-back'>
+                <span id='errores' class='errores text-danger'>
+                  <%= errors.hc2.msg %>
+                </span>
+              </div>
+              <% } %>
+
+              <input class='controls' type='text' name='firstname' id='firstname' placeholder='Nombre' data-index='1' autocomplete='off'>
+
+              <% if (locals.errors && errors.firstname) { %>
+                <div class='box-errores-back'>
+                  <span id='errores' class='errores text-danger'>
+                    <%= errors.firstname.msg %>
+                  </span>
+                </div>
+                <% } %>
+                  <input class='controls' type='text' name='lastname' id='lastname' placeholder='Apellido'
+                    data-index='2' autocomplete='off'>
+
+                  <% if (locals.errors && errors.lastname) { %>
+                    <div class='box-errores-back'>
+                      <span id='errores' class='errores text-danger'>
+                        <%= errors.lastname.msg %>
+                      </span>
+                    </div>
+                    <% } %>
+                      <h3 for='lastAppointment'>Último registro:</h3>
+                      <input class='controls' type='date' name='lastAppointment' id='lastAppointment'
+                        placeholder='Último registro' data-index='3' autocomplete='off'>
+
+                      <% if (locals.errors && errors.lastAppointment) { %>
+                        <div class='box-errores-back'>
+                          <span id='errores' class='errores text-danger'>
+                            <%= errors.lastAppointment.msg %>
+                          </span>
+                        </div>
+                        <% } %>
+                          <input class='controls' type='text' name='box' id='box'
+                            placeholder='Últimos 3 digitos del DNI' data-index='4' >
+
+                          <% if (locals.errors && errors.box) { %>
+                            <div class='box-errores-back'>
+                              <span id='errores' class='errores text-danger'>
+                                <%= errors.box.msg %>
+                              </span>
+                            </div>
+                            <% } %>
+                              <button class='botons' id='btnModalSubmit' type='submit' value='Registrar'>Registrar
+                                Historia clinica</button>
+                              <div class='box-errores-front' id='box-errores-front'>
+                                <span class='errores text-danger' id='errores-front'></span>
+                              </div>
+        </section>
+
+      </form>
+      <% if (recordCreated) { %>
+        <!-- Modal -->
+        <div class='modal' id='myModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel'
+          aria-hidden='true'>
+          <div class='modal-dialog' role='document'>
+            <div class='modal-content'>
+              <div class='modal-header'>
+                <h5 class='modal-title' id='exampleModalLabel'>Historia Clínica</h5>
+                <button class='btn' >
+                  <span id='myBtn'><i class='fa-solid fa-xmark'></i></span>
+                </button>
+              </div>
+              <div class='modal-body'>
+                Registro creado correctamente
+              </div>
+              <div class='modal-footer'>
+                <button type='button' class='btn btn-secondary' id='myBtn' data-dismiss='modal'>Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } %>
+          <script src='/js/Validations.js'></script>
+          <script src='/js/Validations.js'></script>
+  </body>
+
+  </html>

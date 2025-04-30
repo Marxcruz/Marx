@@ -1,0 +1,58 @@
+.row {
+  color: var(--color-form-text-input);
+  width: 100vw;
+  margin: 1rem auto;
+}
+
+.dataTables_filter {
+  margin-top: 1rem;
+}
+
+.table {
+  background-color: var(--color-backgroun-listado);
+  color: #fff;
+  border: 1px solid #ced4da;
+  line-height: 1.5;
+  max-width: 100%;
+  table-layout: fixed;
+  margin: auto;
+}
+
+.table th {
+  text-align: center !important;
+}
+
+.table tr {
+  --bs-table-hover-color: #35b7e8;
+  text-align: center;
+}
+
+.table td {
+  vertical-align: middle
+}
+
+.table .detail {
+  text-align: center;
+  width: 30px;
+}
+
+.table .detail i {
+  font-size: 25px;
+  color: #fff;
+}
+
+@media screen and (min-width: 525px) {
+  .container-table {
+    margin: 2rem 0;
+  }
+  .row {
+    margin: 2rem auto;
+    padding: 0;
+    width: 90%;
+  }
+  .table {
+    padding: 0.75rem;
+    border-radius: 0.25rem;
+    max-width: 80%;
+  }
+}

@@ -1,0 +1,28 @@
+.paciente .div-datos{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background: var(--color-form-background-input);
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    border: 1px solid var(--color-form-border-input);
+    font-size: 18px;
+    color: var(--color-form-text-input);
+    outline: #24303c
+}
+.paciente .div-datos p, .paciente .div-datos h5{
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.paciente .div-datos .controls-paciente{
+    width: 100%;
+    background: var(--color-form-background-input);
+    outline: #24303c;
+    color: var(--color-form-text-input);
+    font-size: 18px;
+    border-radius: 4px;
+    border: none;
+    text-align: right;
+}
